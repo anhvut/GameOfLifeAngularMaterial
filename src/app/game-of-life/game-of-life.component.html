@@ -4,20 +4,20 @@
 
     <section class="example-section">
       <mat-form-field class="example-margin">
-        <input matInput type="number" placeholder="Number of columns" [(ngModel)]="nbColumns">
+         <input matInput type="number" [disabled]="isPlaying" placeholder="Number of columns" [(ngModel)]="nbColumns">
       </mat-form-field>
       <mat-form-field class="example-margin">
-        <input matInput type="number" placeholder="Number of rows" [(ngModel)]="nbRows">
+        <input matInput type="number" [disabled]="isPlaying" placeholder="Number of rows" [(ngModel)]="nbRows">
       </mat-form-field>
       <mat-form-field class="example-margin">
-        <input matInput type="number" placeholder="Initial fill %" [(ngModel)]="initialFillPercent">
+        <input matInput type="number" [disabled]="isPlaying" placeholder="Initial fill %" [(ngModel)]="initialFillPercent">
       </mat-form-field>
       <mat-form-field class="example-margin">
-        <input matInput type="number" placeholder="Update interval ms" [(ngModel)]="updateInterval">
+        <input matInput type="number" [disabled]="isPlaying" placeholder="Update interval ms" [(ngModel)]="updateInterval">
       </mat-form-field>
     </section>
     <section>
-      <button mat-raised-button class="example-margin">Reset</button>
+      <button mat-raised-button class="example-margin" (click)="onResetClick()">Reset</button>
       <button mat-raised-button class="example-margin" (click)="onPlayStopClick()">{{playStopLabel}}</button>
     </section>
   </mat-card-content>
@@ -26,6 +26,12 @@
 <mat-card class="result">
   <mat-card-content>
     <h2 class="example-h2">Result</h2>
-
+    <div style="font-family: monospace">
+      <div *ngFor="let row of gameBoardEventEmitter | async">
+        <span *ngFor="let cell of row">
+          {{cell ? 'O' : '.'}}
+        </span>
+      </div>
+    </div>
   </mat-card-content>
 </mat-card>
