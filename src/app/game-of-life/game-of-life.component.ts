@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {EventEmitterInitialValue} from '../util/EventEmitterInitialValue';
-
+import {MessageBox} from '../_shared/message-box';
+import {MatDialog} from '@angular/material';
 
 /**
  * @title Game of life
@@ -23,6 +24,9 @@ export class GameOfLifeComponent implements OnInit {
 
   private gameBoard = [];
 
+  constructor (private dialog: MatDialog) {
+
+  }
 
   ngOnInit(): void {
     this.onResetClick();
@@ -48,6 +52,14 @@ export class GameOfLifeComponent implements OnInit {
   }
 
   onPlayStopClick(): void {
+    if (! this.isPlaying) {
+      // check input values
+      if (this.nbColumns <= 0 || this.nbRows <= 0 || this.initialFillPercent <= 0 || this.updateInterval <= 0) {
+        MessageBox.show(this.dialog, 'Please set positive values');
+        return;
+      }
+    }
+
     this.isPlaying = !this.isPlaying;
     this.playStopLabel = this.isPlaying ? 'Stop' : 'Play';
     if (this.isPlaying) {

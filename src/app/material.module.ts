@@ -10,11 +10,22 @@ import {
   MatSliderModule,
   MatCheckboxModule,
   MatInputModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
 } from '@angular/material';
+
+/* MessageBox from https://github.com/trashvin/messagebox-like-angular-alertbox */
+import { MatDialogModule, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MessageService} from './_shared/message.service';
+
+import { SimpleDialogComponent } from './simple-dialog/simple-dialog.component';
+
 
 @NgModule({
   declarations: [
+    SimpleDialogComponent
+  ],
+  entryComponents: [
+    SimpleDialogComponent
   ],
   imports: [
     MatButtonModule,
@@ -27,6 +38,7 @@ import {
     MatCheckboxModule,
     MatInputModule,
     MatButtonToggleModule,
+    MatDialogModule
   ],
   exports: [
     MatButtonModule,
@@ -38,7 +50,12 @@ import {
     MatSliderModule,
     MatCheckboxModule,
     MatInputModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatDialogModule
+  ],
+  providers: [
+    {provide: MAT_DIALOG_DATA, useValue: {}},
+    MessageService
   ]
 })
 export class MaterialModule {}
