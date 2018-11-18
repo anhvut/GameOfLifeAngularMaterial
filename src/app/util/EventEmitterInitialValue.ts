@@ -6,7 +6,7 @@ import {EventEmitter} from '@angular/core';
  * This avoids the subscriber to wait for next value.
  */
 
-export class EventEmitterInitialValue extends EventEmitter {
+export class EventEmitterInitialValue<T> extends EventEmitter<T> {
   getInitialValue: () => any;
 
   constructor(isAsync, getInitialValue) {
@@ -16,6 +16,6 @@ export class EventEmitterInitialValue extends EventEmitter {
 
   subscribe(generatorOrNext?: any, error?: any, complete?: any): any {
     super.subscribe(generatorOrNext, error, complete);
-    this.emit(this.getInitialValue());
+    super.emit(this.getInitialValue());
   }
 }

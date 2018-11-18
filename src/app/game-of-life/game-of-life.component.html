@@ -25,7 +25,7 @@
 
 <mat-card class="result">
   <mat-card-content>
-    <h2 class="example-h2">Result</h2>
+    <h2 class="example-h2">Generation {{generationNumber}}</h2>
     <div style="font-family: monospace">
       <div *ngFor="let row of gameBoardEventEmitter | async">
         <span *ngFor="let cell of row">
