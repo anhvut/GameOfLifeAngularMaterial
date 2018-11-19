@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {EventEmitterInitialValue} from '../util/EventEmitterInitialValue';
 
+const GRIDSIZE = 16;
 
 /**
  * @title Game of life
@@ -19,18 +19,43 @@ export class GameOfLifeComponent implements OnInit {
   isPlaying = false;
   playIntervalHandle = null;
   generationNumber = 0;
-  gameBoardEventEmitter = new EventEmitterInitialValue<object[]>(true, () => this.gameBoard);
 
-  private gameBoard = [];
-
+  private gameBoard: boolean[][] = [];
 
   ngOnInit(): void {
     this.onResetClick();
   }
 
-  publishNextGameBoard(nextBoard: object[]): void {
+  publishNextGameBoard(nextBoard: boolean[][]): void {
     this.gameBoard = nextBoard;
-    this.gameBoardEventEmitter.emit(nextBoard);
+    const canvas = <HTMLCanvasElement>document.getElementById('board');
+    const ctx = canvas.getContext('2d');
+
+    for (let y = 0, endY = this.nbRows; y < endY; y++) {
+      const currentRow = nextBoard[y];
+      for (let x = 0, endX = this.nbColumns; x < endX; x++) {
+        const cell = currentRow[x];
+        ctx.beginPath();
+        ctx.fillStyle = cell ? 'limegreen' : 'white';
+        ctx.fillRect(x * GRIDSIZE, y * GRIDSIZE, (x + 1) * GRIDSIZE, (y + 1) * GRIDSIZE);
+      }
+    }
+    for (let y = 0, endY = this.nbRows; y <= endY; y++) {
+      ctx.beginPath();
+      ctx.lineWidth = y === 0 || y === this.nbRows ? 2 : 1;
+      ctx.strokeStyle = 'darkgrey';
+      ctx.moveTo(0, y * GRIDSIZE);
+      ctx.lineTo(this.nbColumns * GRIDSIZE, y * GRIDSIZE);
+      ctx.stroke();
+    }
+    for (let x = 0, endX = this.nbColumns; x <= endX; x++) {
+      ctx.beginPath();
+      ctx.lineWidth = x === 0 || x === this.nbColumns ? 2 : 1 ;
+      ctx.strokeStyle = 'darkgrey';
+      ctx.moveTo(x * GRIDSIZE, 0);
+      ctx.lineTo(x * GRIDSIZE, this.nbRows * GRIDSIZE);
+      ctx.stroke();
+    }
   }
 
   onResetClick(): void {
@@ -43,6 +68,9 @@ export class GameOfLifeComponent implements OnInit {
         currentRow.push(Math.random() < threshold);
       }
     }
+    const canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('board');
+    canvas.width = this.nbColumns * GRIDSIZE;
+    canvas.height = this.nbRows * GRIDSIZE;
     this.generationNumber = 0;
     this.publishNextGameBoard(nextBoard);
   }

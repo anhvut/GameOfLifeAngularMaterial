@@ -26,12 +26,6 @@
 <mat-card class="result">
   <mat-card-content>
     <h2 class="example-h2">Generation {{generationNumber}}</h2>
-    <div style="font-family: monospace">
-      <div *ngFor="let row of gameBoardEventEmitter | async">
-        <span *ngFor="let cell of row">
-          {{cell ? 'O' : '.'}}
-        </span>
-      </div>
-    </div>
+    <canvas width="640" height="400" style="padding:0;margin:0" id="board"></canvas>
   </mat-card-content>
 </mat-card>
